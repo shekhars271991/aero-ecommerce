@@ -22,6 +22,9 @@ RUN npm ci
 # Copy source code
 COPY . .
 
+# Clear any existing .next cache that might cause issues
+RUN rm -rf .next
+
 # Build the application
 RUN npm run build
 
