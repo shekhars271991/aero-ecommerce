@@ -22,16 +22,6 @@ RUN npm ci
 # Copy source code
 COPY . .
 
-# Debug: List the structure to verify files are copied correctly
-RUN echo "=== Debugging file structure ===" && \
-    ls -la && \
-    echo "=== src directory ===" && \
-    ls -la src/ && \
-    echo "=== src/lib directory ===" && \
-    ls -la src/lib/ && \
-    echo "=== tsconfig.json content ===" && \
-    cat tsconfig.json
-
 # Build the application
 RUN npm run build
 
