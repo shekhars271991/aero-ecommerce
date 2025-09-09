@@ -1,0 +1,5 @@
+{
+  "/data-models/page": "app/data-models/page.js",
+  "/page": "app/page.js",
+  "/products/page": "app/products/page.js"
+}
