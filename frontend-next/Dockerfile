@@ -19,19 +19,16 @@ COPY next.config.js ./
 # Install all dependencies (needed for build)
 RUN npm ci
 
-# Copy source code
-COPY . .
+# Copy source code explicitly
+COPY src/ ./src/
+COPY public/ ./public/
+COPY tailwind.config.js postcss.config.js next-env.d.ts ./
 
 # Clear any existing .next cache that might cause issues
 RUN rm -rf .next
 
-# Debug: Check if files exist and config is correct
-RUN echo "=== Checking file structure ===" && \
-    ls -la src/lib/ && \
-    echo "=== Checking tsconfig paths ===" && \
-    cat tsconfig.json | grep -A 10 paths && \
-    echo "=== Checking next.config webpack ===" && \
-    cat next.config.js | grep -A 10 webpack
+# Verify files are copied correctly
+RUN ls -la src/lib/
 
 # Build the application
 RUN npm run build
