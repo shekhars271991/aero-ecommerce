@@ -1,7 +1,7 @@
 # Use Node.js 18 Alpine image
 FROM node:18-alpine
 
-# Install dependencies
+# Install dependencies and curl for health checks
 RUN apk add --no-cache libc6-compat curl
 
 # Set working directory
@@ -11,27 +11,30 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Create non-root user
-RUN addgroup --system --gid 1001 nodejs
-RUN adduser --system --uid 1001 nextjs
-
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production && npm cache clean --force
+# Install all dependencies (needed for build)
+RUN npm ci
 
 # Copy source code
 COPY . .
+
+# Build the application
+RUN npm run build
+
+# Remove dev dependencies to reduce image size
+RUN npm prune --production
+
+# Create non-root user
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
 
 # Change ownership to nextjs user
 RUN chown -R nextjs:nodejs /app
 
 # Switch to non-root user
 USER nextjs
-
-# Build the application
-RUN npm run build
 
 # Expose port
 EXPOSE 4000
