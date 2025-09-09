@@ -1,3 +1,5 @@
+const path = require('path')
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
@@ -7,6 +9,13 @@ const nextConfig = {
   typescript: {
     // Allow production builds to successfully complete even if there are type errors
     ignoreBuildErrors: true,
+  },
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': path.resolve(__dirname, './src'),
+    }
+    return config
   },
   images: {
     domains: ['images.unsplash.com', 'localhost'],
