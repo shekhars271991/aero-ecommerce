@@ -1,5 +1,6 @@
 import time
 import uuid
+import os
 from datetime import datetime
 from typing import Dict, List, Optional, Any
 import aerospike
@@ -21,8 +22,10 @@ class AerospikeManager:
     def connect_aerospike(self):
         """Connect to Aerospike"""
         try:
+            host = os.getenv('AEROSPIKE_HOST', '127.0.0.1')
+            port = int(os.getenv('AEROSPIKE_PORT', '3000'))
             config = {
-                'hosts': [('127.0.0.1', 3000)]
+                'hosts': [(host, port)]
             }
             self.aerospike_client = aerospike.client(config).connect()
             print("Aerospike Manager connected successfully!")

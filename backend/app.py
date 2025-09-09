@@ -1,4 +1,5 @@
 import sys
+import os
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api
@@ -13,7 +14,7 @@ from database import init_database_functions
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key-here'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://grocery_user:grocery_password@localhost:3306/grocery_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{os.getenv('MYSQL_USER', 'grocery_user')}:{os.getenv('MYSQL_PASSWORD', 'grocery_password')}@{os.getenv('MYSQL_HOST', 'localhost')}:{os.getenv('MYSQL_PORT', '3306')}/{os.getenv('MYSQL_DATABASE', 'grocery_db')}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Enable demo mode for showing database operations

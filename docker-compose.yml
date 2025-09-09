@@ -1,6 +1,60 @@
-version: '3.8'
-
 services:
+  # Backend Flask Application
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: grocery_backend
+    environment:
+      - FLASK_ENV=production
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USER=grocery_user
+      - MYSQL_PASSWORD=grocery_password
+      - MYSQL_DATABASE=grocery_db
+      - AEROSPIKE_HOST=aerospike
+      - AEROSPIKE_PORT=3000
+      - MONGODB_HOST=mongodb
+      - MONGODB_PORT=27017
+    ports:
+      - "5001:5001"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      aerospike:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - grocery_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5001/api/debug"]
+      timeout: 20s
+      retries: 10
+      start_period: 30s
+
+  # Frontend Next.js Application
+  frontend:
+    build:
+      context: ./frontend-next
+      dockerfile: Dockerfile
+    container_name: grocery_frontend
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_API_URL=http://localhost:5001
+    ports:
+      - "4000:4000"
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - grocery_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4000"]
+      timeout: 20s
+      retries: 10
+      start_period: 30s
   mysql:
     image: mysql:8.0
     container_name: grocery_mysql

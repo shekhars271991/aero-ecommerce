@@ -1,5 +1,6 @@
 import time
 import uuid
+import os
 from datetime import datetime
 from typing import Dict, List, Optional, Any
 from pymongo import MongoClient
@@ -23,7 +24,9 @@ class MongoManager:
         """Connect to MongoDB"""
         try:
             # MongoDB connection with authentication
-            connection_string = 'mongodb://root:rootpassword@localhost:27017/'
+            host = os.getenv('MONGODB_HOST', 'localhost')
+            port = os.getenv('MONGODB_PORT', '27017')
+            connection_string = f'mongodb://root:rootpassword@{host}:{port}/'
             self.mongo_client = MongoClient(connection_string)
             
             # Test the connection
