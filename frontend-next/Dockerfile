@@ -25,6 +25,14 @@ COPY . .
 # Clear any existing .next cache that might cause issues
 RUN rm -rf .next
 
+# Debug: Check if files exist and config is correct
+RUN echo "=== Checking file structure ===" && \
+    ls -la src/lib/ && \
+    echo "=== Checking tsconfig paths ===" && \
+    cat tsconfig.json | grep -A 10 paths && \
+    echo "=== Checking next.config webpack ===" && \
+    cat next.config.js | grep -A 10 webpack
+
 # Build the application
 RUN npm run build
 
