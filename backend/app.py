@@ -23,12 +23,12 @@ app.config['DEMO_MODE'] = True
 db = SQLAlchemy(app)
 api = Api(app)
 
-# Configure CORS to allow all content types and methods
+# Configure CORS to allow all origins for development/demo purposes
 CORS(app, 
-     origins=['http://localhost:3000', 'http://localhost:4000'],
+     origins='*',  # Allow all origins
      methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
      allow_headers=['Content-Type', 'Authorization', 'X-Requested-With', 'X-Database', 'X-Suppress-Logging'],
-     supports_credentials=True)
+     supports_credentials=False)  # Set to False when using origins='*'
 
 # Initialize database manager
 db_manager = UnifiedDatabaseManager()

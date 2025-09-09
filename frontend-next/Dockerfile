@@ -27,11 +27,6 @@ COPY tailwind.config.js postcss.config.js next-env.d.ts ./
 # Clear any existing .next cache that might cause issues
 RUN rm -rf .next
 
-# Debug: Check what was actually copied
-RUN echo "=== Root directory ===" && ls -la && \
-    echo "=== src directory ===" && ls -la src/ && \
-    echo "=== Looking for lib files ===" && find . -name "api.ts" -o -name "iconMapping.ts" 2>/dev/null || echo "No lib files found"
-
 # Build the application
 RUN npm run build
 
