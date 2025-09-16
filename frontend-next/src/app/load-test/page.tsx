@@ -208,7 +208,7 @@ export default function LoadTestPage() {
   // New: Restore ongoing test on page refresh
   const checkActiveTest = async () => {
     try {
-      const response = await axios.get('http://localhost:5001/api/load-test/status')
+      const response = await axios.get('/api/load-test/status')
       if (response.data.status === 'running' && response.data.current_test) {
         // Ensure we are not already polling for this test
         if (!progressPollingRef.current) {
@@ -245,7 +245,7 @@ export default function LoadTestPage() {
 
   const fetchCapabilities = async () => {
     try {
-      const response = await axios.get('http://localhost:5001/api/load-test')
+      const response = await axios.get('/api/load-test')
       setCapabilities(response.data)
     } catch (err) {
       console.error('Failed to fetch capabilities:', err)
@@ -370,7 +370,7 @@ export default function LoadTestPage() {
     setLiveMetrics([])
 
     try {
-      const response = await axios.post('http://localhost:5001/api/load-test', {
+      const response = await axios.post('/api/load-test', {
         ...testConfig,
         databases: testConfig.databases,
         concurrent_users: testConfig.concurrent_users,
@@ -403,7 +403,7 @@ export default function LoadTestPage() {
     }
     progressPollingRef.current = setInterval(async () => {
       try {
-        const response = await axios.get(`http://localhost:5001/api/load-test/status/${testId}`)
+        const response = await axios.get(`/api/load-test/status/${testId}`)
         const progressData = response.data
         
         setProgress(progressData)
@@ -420,7 +420,7 @@ export default function LoadTestPage() {
           clearInterval(progressPollingRef.current!)
           
           // Fetch final results
-          const resultsResponse = await axios.get(`http://localhost:5001/api/load-test/results/${testId}`)
+          const resultsResponse = await axios.get(`/api/load-test/results/${testId}`)
           setResults(resultsResponse.data)
           setActiveTab('results')
           saveTestHistory(resultsResponse.data)
@@ -440,7 +440,7 @@ export default function LoadTestPage() {
 
   const stopLoadTest = async () => {
     try {
-      await axios.post('http://localhost:5001/api/load-test/stop')
+      await axios.post('/api/load-test/stop')
       setIsRunning(false)
       setIsPaused(false)
       if (progressPollingRef.current) {
@@ -454,7 +454,7 @@ export default function LoadTestPage() {
 
   const pauseLoadTest = async () => {
     try {
-      await axios.post('http://localhost:5001/api/load-test/pause')
+      await axios.post('/api/load-test/pause')
       setIsPaused(true)
       toast.success('Load test paused')
     } catch (err) {
@@ -464,7 +464,7 @@ export default function LoadTestPage() {
 
   const resumeLoadTest = async () => {
     try {
-      await axios.post('http://localhost:5001/api/load-test/resume')
+      await axios.post('/api/load-test/resume')
       setIsPaused(false)
       toast.success('Load test resumed')
     } catch (err) {
@@ -476,7 +476,7 @@ export default function LoadTestPage() {
     if (!results) return
     
     try {
-      const response = await axios.get(`http://localhost:5001/api/load-test/export/${results.test_id}?format=${format}`)
+      const response = await axios.get(`/api/load-test/export/${results.test_id}?format=${format}`)
       
       if (format === 'json') {
         const dataStr = JSON.stringify(response.data, null, 2)
@@ -563,7 +563,7 @@ export default function LoadTestPage() {
     
     try {
       // Try to fetch full results from backend
-      const response = await axios.get(`http://localhost:5001/api/load-test/results/${test.test_id}`)
+      const response = await axios.get(`/api/load-test/results/${test.test_id}`)
       setSelectedHistoryResults(response.data)
     } catch (err) {
       console.error('Failed to fetch full test results:', err)

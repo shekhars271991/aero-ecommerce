@@ -165,7 +165,7 @@ export default function ProductsPage() {
   const fetchQueryLogs = async () => {
     try {
       const filterParam = queryFilter !== 'all' ? `?database_type=${queryFilter}` : ''
-      const response = await fetch(`http://localhost:5001/api/db-logs${filterParam}`)
+      const response = await fetch(`/api/db-logs${filterParam}`)
       const data = await response.json()
       
       if (data.success && data.data) {
@@ -179,7 +179,7 @@ export default function ProductsPage() {
   const clearQueryLogs = async () => {
     try {
       const filterParam = queryFilter !== 'all' ? `?database_type=${queryFilter}` : ''
-      const response = await fetch(`http://localhost:5001/api/db-logs${filterParam}`, {
+      const response = await fetch(`/api/db-logs${filterParam}`, {
         method: 'DELETE'
       })
       const data = await response.json()
@@ -199,7 +199,7 @@ export default function ProductsPage() {
   const fetchApiLogs = async () => {
     try {
       const filterParam = queryFilter !== 'all' ? `?database_type=${queryFilter}` : ''
-      const response = await fetch(`http://localhost:5001/api/api-logs${filterParam}`)
+      const response = await fetch(`/api/api-logs${filterParam}`)
       const data = await response.json()
       
       if (data.success && data.data) {
@@ -213,7 +213,7 @@ export default function ProductsPage() {
   const clearApiLogs = async () => {
     try {
       const filterParam = queryFilter !== 'all' ? `?database_type=${queryFilter}` : ''
-      const response = await fetch(`http://localhost:5001/api/api-logs${filterParam}`, {
+      const response = await fetch(`/api/api-logs${filterParam}`, {
         method: 'DELETE'
       })
       const data = await response.json()

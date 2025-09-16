@@ -112,6 +112,7 @@ def setup_application():
     api.add_resource(api_resources['LoadTestStatusResource'], '/api/load-test/status', '/api/load-test/status/<string:test_id>')
     api.add_resource(api_resources['LoadTestControlResource'], '/api/load-test/<string:action>')
     api.add_resource(api_resources['LoadTestExportResource'], '/api/load-test/export/<string:test_id>')
+    api.add_resource(api_resources['RecommendationsResource'], '/api/recommendations')
     
     # Initialize database functions
     db_functions = init_database_functions(app, db, models, db_manager, utils['db_tracker'])

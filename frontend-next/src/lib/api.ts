@@ -186,6 +186,26 @@ export const apiService = {
     })
     return response.data.data
   },
+
+  // Recommendations (Aerospike only)
+  getRecommendations: async (limit: number = 6): Promise<{
+    recommendations: Product[];
+    total_count: number;
+    session_id: string;
+    algorithm: string;
+    generated_at?: string;
+  }> => {
+    const response = await api.get<ApiResponse<{
+      recommendations: Product[];
+      total_count: number;
+      session_id: string;
+      algorithm: string;
+      generated_at?: string;
+    }>>('/recommendations', {
+      params: { limit, session_id: getSessionId() }
+    })
+    return response.data.data
+  },
 }
 
 // Error handling utilities

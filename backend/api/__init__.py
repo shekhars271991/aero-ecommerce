@@ -5,6 +5,7 @@ from .orders import create_orders_resource
 from .debug import create_debug_resources
 from .database import create_database_resource
 from .load_test import create_load_test_resources
+from .recommendations import create_recommendations_resource
 
 
 def init_api_resources(db, models, db_manager, utils):
@@ -47,6 +48,9 @@ def init_api_resources(db, models, db_manager, utils):
     LoadTestControlResource = load_test_resources['LoadTestControlResource']
     LoadTestExportResource = load_test_resources['LoadTestExportResource']
     
+    # Create recommendations resource
+    RecommendationsResource = create_recommendations_resource(db_manager, time_api_call, create_api_response)
+    
     return {
         'UserResource': UserResource,
         'CategoriesResource': CategoriesResource,
@@ -70,5 +74,6 @@ def init_api_resources(db, models, db_manager, utils):
         'LoadTestResultsResource': LoadTestResultsResource,
         'LoadTestStatusResource': LoadTestStatusResource,
         'LoadTestControlResource': LoadTestControlResource,
-        'LoadTestExportResource': LoadTestExportResource
+        'LoadTestExportResource': LoadTestExportResource,
+        'RecommendationsResource': RecommendationsResource
     }

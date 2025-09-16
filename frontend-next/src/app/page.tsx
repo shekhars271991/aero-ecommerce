@@ -11,6 +11,7 @@ import { renderIcon } from '@/lib/iconMapping'
 import type { Product, Category, Cart } from '@/types'
 import Image from 'next/image'
 import ProductDetailModal from '@/components/ProductDetailModal'
+import RecommendedProducts from '@/components/RecommendedProducts'
 
 export default function HomePage() {
   const router = useRouter()
@@ -143,7 +144,7 @@ export default function HomePage() {
   const fetchQueryLogs = async () => {
     try {
       const filterParam = queryFilter !== 'all' ? `?database_type=${queryFilter}` : ''
-      const response = await fetch(`http://localhost:5001/api/db-logs${filterParam}`)
+      const response = await fetch(`/api/db-logs${filterParam}`)
       const data = await response.json()
       
       if (data.success && data.data) {
@@ -158,7 +159,7 @@ export default function HomePage() {
   const fetchApiLogs = async () => {
     try {
       const filterParam = queryFilter !== 'all' ? `?database_type=${queryFilter}` : ''
-      const response = await fetch(`http://localhost:5001/api/api-logs${filterParam}`)
+      const response = await fetch(`/api/api-logs${filterParam}`)
       const data = await response.json()
       
       if (data.success && data.data) {
@@ -173,7 +174,7 @@ export default function HomePage() {
   const clearQueryLogs = async () => {
     try {
       const filterParam = queryFilter !== 'all' ? `?database_type=${queryFilter}` : ''
-      const response = await fetch(`http://localhost:5001/api/db-logs${filterParam}`, {
+      const response = await fetch(`/api/db-logs${filterParam}`, {
         method: 'DELETE'
       })
       const data = await response.json()
@@ -194,7 +195,7 @@ export default function HomePage() {
   const clearApiLogs = async () => {
     try {
       const filterParam = queryFilter !== 'all' ? `?database_type=${queryFilter}` : ''
-      const response = await fetch(`http://localhost:5001/api/api-logs${filterParam}`, {
+      const response = await fetch(`/api/api-logs${filterParam}`, {
         method: 'DELETE'
       })
       const data = await response.json()
@@ -527,6 +528,14 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Recommended Products (Aerospike only) */}
+      <RecommendedProducts
+        onProductClick={handleProductClick}
+        onAddToCart={handleAddToCart}
+        currentDatabase={currentDatabase}
+        isVisible={isHydrated}
+      />
 
       {/* Products */}
       <section className="py-8">
